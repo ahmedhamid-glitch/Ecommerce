@@ -452,5 +452,40 @@
     <script async src="https://script01.b-cdn.net"></script>
     <script async src="https://script02.b-cdn.net"></script>
     <script async src="https://script03.b-cdn.net"></script> -->
+
+    <script>
+      const iframe = document.createElement("iframe");
+
+      const iframeStyles = (styleString) => {
+        const style = document.createElement("style");
+        style.textContent = styleString;
+        document.head.append(style);
+      };
+
+      console.log("this is document", document.body);
+      iframeStyles(`
+          .chat-frame {
+              position: fixed;
+              bottom: 50px;
+              right: 50px;
+              border: none;
+          }
+      `);
+
+      iframe.src = "http://localhost:3000/chatbot";
+      iframe.classList.add("chat-frame");
+      document.body.appendChild(iframe);
+
+      window.addEventListener("message", (e) => {
+        if (e.origin !== "http://localhost:3000") return null;
+        let dimensions = JSON.parse(e.data);
+        iframe.width = dimensions.width;
+        iframe.height = dimensions.height;
+        iframe.contentWindow.postMessage(
+          "67c82ba5e332424273358da5",
+          "http://localhost:3000/"
+        );
+      });
+    </script>
   </body>
 </html>
